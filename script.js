@@ -1,5 +1,4 @@
 let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-
 let game;
 
 const Game = () => {
@@ -7,6 +6,7 @@ const Game = () => {
         const markLocation = (x, y) => {
             if (board[x][y] === 0) {
                 board[x][y] = symbol
+                checkWin()
                 turn = !turn
             } else {
                 console.log('Invalid Location')
@@ -18,28 +18,30 @@ const Game = () => {
     const Click = (x, y) => {
         turn ? p1.markLocation(x, y) : p2.markLocation(x, y)
         drawBoard()
-        if (checkWin()) announceWin()
     }
 
     const checkWin = () => {
         for (let i = 0; i <= 2; i++) {
             if ((board[i][0] === board[i][1]) && (board[i][1] === board[i][2]) && board[i][0] != 0) {
-                return true
+                announceWin()
+                return 
             }
         }
         for (let i = 0; i <= 2; i++) {
             if ((board[0][i] === board[1][i]) && (board[1][i] === board[2][i]) && board[0][i] != 0) {
-                return true
+                announceWin()
+                return 
             }
         }
         if ((((board[1][1] === board[0][0]) && (board[2][2] === board[1][1])) || ((board[0][2] === board[0][0]) && (board[2][0] === board[1][1]))) && board[1][1] != 0) {
-            return true
+            announceWin()
+            return 
         }
-        return false
+        return console.log('no Winner')
     }
 
     const announceWin = () => {
-        turn ? console.log('Player 1 Wins') : 'Player 2 Wins'
+        turn ? console.log('Player 1 Wins') : console.log('Player 2 Wins')
     }
 
     const drawBoard = () => {
