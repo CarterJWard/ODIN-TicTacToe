@@ -1,5 +1,7 @@
 let board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
 
+let game;
+
 const Game = () => {
     const Player = (symbol) => {
         const markLocation = (x, y) => {
@@ -15,6 +17,7 @@ const Game = () => {
 
     const Click = (x, y) => {
         turn ? p1.markLocation(x, y) : p2.markLocation(x, y)
+        drawBoard()
         if (checkWin()) announceWin()
     }
 
@@ -40,19 +43,23 @@ const Game = () => {
     }
 
     const drawBoard = () => {
-        const table = document.getElementById('board')
-        for (rowIndex = 0; rowIndex <= 2; rowIndex++) {
-            const row = table.insertRow(rowIndex)
-            for (colIndex = 0; colIndex <= 2; colIndex++) {
-                const cell = row.insertCell(colIndex)
-                cell.innerHTML = '   '
-                if (board[rowIndex][colIndex] === 1) {
-                    cell.innerHTML = 'X'
-                }
-                if (board[rowIndex][colIndex] === 2) {
-                    cell.innerHTML = 'O'
-                }
+        const boardOBJ = document.getElementById('board')
+        const children = boardOBJ.childNodes
+        let counter = 1;
+        for (i = 0; i < 3; i++) {
+            for (a = 0; a < 3; a++) {
+                children.item(counter).innerHTML = checkPosition(i, a)
+                counter += 2;
             }
+        }
+    }
+
+    const checkPosition = (row, col) => {
+        let value = board[row][col]
+        switch (value) {
+            case 2: return '<button>2</button>';
+            case 1: return '<button>1</button>';
+            default: return `<button onClick='game.Click(${row},${col})'>0</button>`
         }
     }
 
@@ -63,4 +70,7 @@ const Game = () => {
     return { Click }
 }
 
-const game = Game()
+document.addEventListener("DOMContentLoaded", function () {
+    game = Game()   
+})
+
