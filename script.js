@@ -6,8 +6,6 @@ const Game = () => {
         const markLocation = (x, y) => {
             if (board[x][y] === 0) {
                 board[x][y] = symbol
-                checkWin()
-                turn = !turn
             } else {
                 console.log('Invalid Location')
             }
@@ -18,6 +16,8 @@ const Game = () => {
     const Click = (x, y) => {
         turn ? p1.markLocation(x, y) : p2.markLocation(x, y)
         drawBoard()
+        checkWin()
+        turn = !turn
     }
 
     const checkWin = () => {
@@ -37,14 +37,28 @@ const Game = () => {
             announceWin()
             return 
         }
-        return console.log('no Winner')
+        //Check for drawn match
+        for(i = 0; i < 3; i++) {
+            for(a = 0; a < 3; a++) {
+                if(board[i][a] === 0) {
+                    return 
+                }
+            }
+        }
+        drawGame()
+    }
+
+    const drawGame = () => {
+        document.getElementById('turn').innerHTML = 'Game Draw, Play Again?'
     }
 
     const announceWin = () => {
+        document.getElementById('turn').innerHTML = turn ? 'Player 1 Wins': 'Player 2 Wins'
         turn ? console.log('Player 1 Wins') : console.log('Player 2 Wins')
     }
 
     const drawBoard = () => {
+        document.getElementById('turn').innerHTML = turn ? 'Player 1 Turn' : 'Player 2 Turn'
         const boardOBJ = document.getElementById('board')
         const children = boardOBJ.childNodes
         let counter = 1;
@@ -59,8 +73,8 @@ const Game = () => {
     const checkPosition = (row, col) => {
         let value = board[row][col]
         switch (value) {
-            case 2: return '<button>2</button>';
-            case 1: return '<button>1</button>';
+            case 2: return '<img src="icons/p2.svg">';
+            case 1: return '<img src="icons/p1.svg">';
             default: return `<button onClick='game.Click(${row},${col})'>0</button>`
         }
     }
@@ -72,7 +86,12 @@ const Game = () => {
     return { Click }
 }
 
+const newGame = () => {
+    board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+    game = Game()
+}
+
 document.addEventListener("DOMContentLoaded", function () {
-    game = Game()   
+    newGame()
 })
 
