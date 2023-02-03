@@ -75,7 +75,7 @@ const Game = () => {
         switch (value) {
             case 2: return '<img src="icons/p2.svg">';
             case 1: return '<img src="icons/p1.svg">';
-            default: return `<button onClick='game.Click(${row},${col})'>0</button>`
+            default: return `<button onClick='game.Click(${row},${col})' class='gameButton'>0</button>`
         }
     }
 
