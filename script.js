@@ -14,10 +14,13 @@ const Game = () => {
     }
 
     const Click = (x, y) => {
+        if(!gameOn) {
+            return
+        }
         turn ? p1.markLocation(x, y) : p2.markLocation(x, y)
-        drawBoard()
         checkWin()
         turn = !turn
+        drawBoard()
     }
 
     const checkWin = () => {
@@ -49,16 +52,22 @@ const Game = () => {
     }
 
     const drawGame = () => {
+        gameOn = false;
         document.getElementById('turn').innerHTML = 'Game Draw, Play Again?'
     }
 
     const announceWin = () => {
-        document.getElementById('turn').innerHTML = turn ? 'Player 1 Wins': 'Player 2 Wins'
+        gameOn = false;
+        turn ? winner = '2': winner = '2'
         turn ? console.log('Player 1 Wins') : console.log('Player 2 Wins')
     }
 
     const drawBoard = () => {
-        document.getElementById('turn').innerHTML = turn ? 'Player 1 Turn' : 'Player 2 Turn'
+        if(winner) {
+            document.getElementById('turn').innerHTML = `Player ${winner} has won! New game?`
+        } else {
+            document.getElementById('turn').innerHTML = turn ? 'Player 1 Turn' : 'Player 2 Turn'
+        }
         const boardOBJ = document.getElementById('board')
         const children = boardOBJ.childNodes
         let counter = 1;
@@ -82,6 +91,8 @@ const Game = () => {
     const p1 = Player(1)
     const p2 = Player(2)
     let turn = true;
+    let winner;
+    let gameOn = true;
     drawBoard()
     return { Click }
 }
