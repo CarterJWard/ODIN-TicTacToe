@@ -1,3 +1,6 @@
+//Tic Tac Toe game
+//By Carter Ward
+
 let board = [
   [0, 0, 0],
   [0, 0, 0],
